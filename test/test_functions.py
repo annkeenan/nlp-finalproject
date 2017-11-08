@@ -15,8 +15,8 @@ class TestFunctions(unittest.TestCase):
 
     def test_calculate_stddev(self):
         ratings = [
-            {'b':5, 'r':4},
-            {'b':5, 'r': 3}
+            {'pred':5, 'obsv':4},
+            {'pred':5, 'obsv': 3}
         ]
         exp_stddev = 2.2360679775
         stddev = functions.calculate_stddev(ratings)
@@ -24,8 +24,13 @@ class TestFunctions(unittest.TestCase):
 
     def test_baseline_stddev(self):
         db_conn = Database_Connection()
-        stddev = functions.baseline_stddev(db_conn, True)
+        stddev = functions.baseline_stddev(db_conn=db_conn, test=True)
         self.assertIsInstance(stddev, float)
+
+    def test_get_reviews(self):
+        db_conn = Database_Connection()
+        reviews = functions.get_reviews(db_conn=db_conn, test=True)
+        self.assertIsInstance(reviews, list)
 
 if __name__ == '__main__':
     unittest.main()

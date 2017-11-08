@@ -44,8 +44,21 @@ class TestBagOfWords(unittest.TestCase):
 
     def test_count_words(self):
         self.reset()
-        self.bagOfWords.count_words(range_min=1, range_max=1)
+        self.bagOfWords.count_words(range_max=1, test=True)
         self.assertIsInstance(self.bagOfWords.get_word_count(), dict)
+
+    def test_predict(self):
+        self.reset()
+        sentence = 'test test1 test2 test test1'
+        word_count = {
+            'test':[0,1,0,0,5],
+            'test1':[10,0,0,0,0],
+            'test2':[0,1,0,0,0],
+        }
+        # exp_count = [20,3,0,0,10] --> 76/33
+        exp_prediction = 2.30303030303
+        prediction = self.bagOfWords.predict(sentence, word_count)
+        self.assertAlmostEqual(prediction, exp_prediction)
 
 if __name__ == '__main__':
     unittest.main()
