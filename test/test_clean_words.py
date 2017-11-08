@@ -12,17 +12,5 @@ class TestCleanWords(unittest.TestCase):
             new_word = clean_words.clean_word(words[w])
             self.assertEqual(new_word, exp_words[w])
 
-    def test_compile_words(self):
-        words = {
-            'test':[0,1,0,0,1],
-            'test-test':[1,1,0,0,0]
-        }
-        exp_words = {
-            'test':[2,3,0,0,1]
-        }
-        new_words = clean_words.compile_words(words)
-        self.assertEqual(new_words, exp_words)
-        pass
-
 if __name__ == '__main__':
     unittest.main()

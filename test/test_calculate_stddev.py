@@ -1,4 +1,4 @@
-# test_word_count.py
+# test_calculate_stddev.py
 import unittest
 from context import script
 from script import calculate_stddev
