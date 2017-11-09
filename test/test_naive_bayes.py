@@ -1,7 +1,8 @@
-# test_bag_of_words.py
+# test_naive_bayes.py
+import math
 import unittest
 from context import script
-from script.bag_of_words import BagOfWords
+from script.naive_bayes import BagOfWords
 
 class TestBagOfWords(unittest.TestCase):
 
@@ -11,6 +12,11 @@ class TestBagOfWords(unittest.TestCase):
 
     def reset(self):
         self.bagOfWords = BagOfWords()
+
+    def test_construct(self):
+        self.reset()
+        self.bagOfWords.construct(range_max=1, test=True)
+        self.assertIsInstance(self.bagOfWords.get_word_count(), dict)
 
     def test_process_review(self):
         self.reset()
@@ -42,6 +48,19 @@ class TestBagOfWords(unittest.TestCase):
         self.bagOfWords.compile_words(words)
         self.assertEqual(self.bagOfWords.get_word_count(), exp_words)
 
+    def test_convert_counts(self):
+        self.reset()
+        words = {
+            'test':[0,0,0,0,1]
+        }
+        exp1 = math.log(.001/1.005, 2)
+        exp2 = math.log(1.001/1.005, 2)
+        exp_words = {
+            'test':[exp1,exp1,exp1,exp1,exp2]
+        }
+        self.bagOfWords.convert_counts(words)
+        self.assertEqual(self.bagOfWords.get_word_count(), exp_words)
+
     def test_count_words(self):
         self.reset()
         self.bagOfWords.count_words(range_max=1, test=True)
@@ -51,14 +70,14 @@ class TestBagOfWords(unittest.TestCase):
         self.reset()
         sentence = 'test test1 test2 test test1'
         word_count = {
-            'test':[0,1,0,0,5],
-            'test1':[10,0,0,0,0],
-            'test2':[0,1,0,0,0],
+            'test':[-10,-10,-10,-10,-1],
+            'test1':[-1,-10,-10,-10,-10],
+            'test2':[-10,-1,-10,-10,-10],
         }
-        # exp_count = [20,3,0,0,10] --> 76/33
-        exp_prediction = 2.30303030303
+        # exp_count = [-32,-41,-50,-50,-32] --> 1, 5 --> 1
+        exp_prediction = 1
         prediction = self.bagOfWords.predict(sentence, word_count)
-        self.assertAlmostEqual(prediction, exp_prediction)
+        self.assertEqual(prediction, exp_prediction)
 
 if __name__ == '__main__':
     unittest.main()
