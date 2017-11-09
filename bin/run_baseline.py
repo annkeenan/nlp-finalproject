@@ -10,4 +10,3 @@ if __name__ == '__main__':
     print('Baseline:')
     print('stddev\t\t%.5f' % stddev)
     print('correctness\t%.3f' % (correctness*100))
-    

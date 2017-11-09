@@ -1,4 +1,5 @@
 # test_functions.py
+import enchant
 import unittest
 from context import script
 from script import functions
@@ -6,12 +7,15 @@ from script.db import Database_Connection
 
 class TestFunctions(unittest.TestCase):
 
-    def test_clean_word(self):
-        words = ['test?','test":;','test\'s','\'test','test-test','test\n','TEST']
-        exp_words = [['test','?'],['test'],['test\'s'],['test'],['test','test'],['test'],['test']]
-        for w in range(len(words)):
-            new_word = functions.clean_word(words[w])
-            self.assertEqual(new_word, exp_words[w])
+    def __init__(self, *args, **kwargs):
+        super(TestFunctions, self).__init__(*args, **kwargs)
+        self._Dict = Dict = enchant.Dict("en_US")
+
+    def test_clean_review(self):
+        review = 'test? test":; test\'s \'test test-test test\n TEST prueba'
+        exp_words = ['test','test','test\'s','test','test','test','test','test']
+        words = functions.clean_review(review, self._Dict)
+        self.assertEqual(words, exp_words)
 
     def test_correctness(self):
         ratings = [
