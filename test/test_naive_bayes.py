@@ -6,7 +6,7 @@ from script.naive_bayes import BagOfWords
 
 
 class TestBagOfWords(unittest.TestCase):
-    testfile = 'data/data.small'
+    testfile = 'data/data.sample'
     bagOfWords = BagOfWords()
 
     def reset(self):

@@ -7,7 +7,7 @@ from script.db import Database_Connection
 
 
 class TestFunctions(unittest.TestCase):
-    testfile = 'data/data.small'
+    testfile = 'data/data.sample'
     _Dict = enchant.Dict("en_US")
 
     def test_clean_review(self):

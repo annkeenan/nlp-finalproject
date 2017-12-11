@@ -6,9 +6,8 @@ from script import functions, db
 
 
 if __name__ == '__main__':
-    db_conn = db.Database_Connection()
-    stddev = functions.baseline_stddev(db_conn)
-    correctness = functions.baseline_correctness(db_conn)
+    stddev = functions.baseline_stddev('data/data.test')
+    correctness = functions.baseline_correctness('data/data.test')
     print('Baseline:')
     print('stddev\t\t%.5f' % stddev)
     print('correctness\t%.3f' % (correctness*100))

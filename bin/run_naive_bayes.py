@@ -2,17 +2,19 @@
 import argparse
 from context import script
 from script import functions
-from script.naive_bayes import BagOfWords
-from script.db import Database_Connection
+from script.naive_bayes import BagOfWords, BagOfPhrases
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('train', help='load training data from a file')
     parser.add_argument('test', help='load testing data from a file')
+    parser.add_argument('-p', action='store_true', help='run phrase based naive bayes')
     args = parser.parse_args()
 
     bagOfWords = BagOfWords()
+    if args.p:
+        bagOfWords = BagOfPhrases()
     bagOfWords.construct(args.train)
 
     ratings = []
@@ -24,6 +26,9 @@ if __name__ == '__main__':
 
     stddev = functions.calculate_stddev(ratings)
     correctness = functions.correctness(ratings)
-    print('Bag of words:')
+    if args.p:
+        print('Bag of phrases:')
+    else:
+        print('Bag of words:')
     print('stddev\t\t%.5f' % stddev)
     print('correctness\t%.3f' % (correctness * 100))
