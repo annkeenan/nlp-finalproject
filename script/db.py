@@ -19,7 +19,7 @@ class Database_Connection(object):
     def query(self, sql, args=None):
         with self.connection.cursor() as cursor:
             if args:
-                cursor.execute(sql,args)
+                cursor.execute(sql, args)
             else:
                 cursor.execute(sql)
         return cursor.fetchall()

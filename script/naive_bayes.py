@@ -18,7 +18,7 @@ class BagOfWords(object):
 
     # Call relevant functions to create a bag of words
     def construct(self, load_file):
-        self.count_words(load_file, test)
+        self.count_words(load_file)
         self.convert_counts()
 
     # Convert counts to log probabilities

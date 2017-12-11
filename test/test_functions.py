@@ -7,6 +7,7 @@ from script.db import Database_Connection
 
 
 class TestFunctions(unittest.TestCase):
+    testfile = 'data/data.small'
     _Dict = enchant.Dict("en_US")
 
     def test_clean_review(self):
@@ -17,32 +18,24 @@ class TestFunctions(unittest.TestCase):
         self.assertEqual(words, exp_words)
 
     def test_correctness(self):
-        ratings = [
-            {'pred': 5, 'obsv': 4},
-            {'pred': 5, 'obsv': 5}
-        ]
+        ratings = [(5, 4), (5, 5)]
         exp_correctness = 0.5
         correctness = functions.correctness(ratings)
         self.assertEqual(correctness, exp_correctness)
 
     def test_baseline_correctness(self):
-        db_conn = Database_Connection()
-        correctness = functions.baseline_correctness(
-            db_conn=db_conn, test=True)
+        correctness = functions.baseline_correctness(self.testfile)
         self.assertIsInstance(correctness, float)
 
     def test_calculate_stddev(self):
-        ratings = [
-            {'pred': 5, 'obsv': 4},
-            {'pred': 5, 'obsv': 3}
-        ]
+        ratings = [(5, 4), (5, 3)]
         exp_stddev = 2.2360679775
         stddev = functions.calculate_stddev(ratings)
         self.assertAlmostEqual(stddev, exp_stddev)
 
     def test_baseline_stddev(self):
         db_conn = Database_Connection()
-        stddev = functions.baseline_stddev(db_conn=db_conn, test=True)
+        stddev = functions.baseline_stddev(self.testfile)
         self.assertIsInstance(stddev, float)
 
     def test_get_reviews(self):

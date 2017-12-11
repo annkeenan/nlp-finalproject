@@ -1,4 +1,5 @@
-# baseline
+# run_baseline.py
+# Calculate the baseline standard deviation/correctness measurements
 import argparse
 from context import script
 from script import functions, db
