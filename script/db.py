@@ -1,6 +1,7 @@
 # db.py
 import pymysql.cursors
 
+
 class Database_Connection(object):
     def __init__(self):
         # Connect to the database
