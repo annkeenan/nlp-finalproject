@@ -7,6 +7,7 @@ from script import functions
 if __name__ == '__main__':
     range_min = None
     range_max = None
+
     parser = argparse.ArgumentParser()
     parser.add_argument('--min', help='test on a sample size with a min range of MIN')
     parser.add_argument('--max', help='train on a sample size with max range of MAX')

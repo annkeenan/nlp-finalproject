@@ -4,7 +4,8 @@ Ann Keenan
 
 ## Summary
 
-Final project for CSE 40657 Natural Language Processing
+Final project for CSE 40657 Natural Language Processing. Sentiment analysis of
+yelp reviews.
 
 ## Usage
 

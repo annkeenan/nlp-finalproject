@@ -2,36 +2,41 @@
 import math
 import unittest
 from context import script
-from script.naive_bayes import BagOfWords
+from script.naive_bayes import BagOfPhrases
 
 
-class TestBagOfWords(unittest.TestCase):
+class TestBagOfPhrases(unittest.TestCase):
     testfile = 'data/data.sample'
-    bagOfWords = BagOfWords()
+    bagOfPhrases = BagOfPhrases()
 
     def reset(self):
-        self.bagOfWords = BagOfWords()
+        self.bagOfPhrases = BagOfPhrases()
 
     def test_convert_counts(self):
         self.reset()
-        self.bagOfWords.count_words(self.testfile)
-        self.bagOfWords.convert_counts()
-        self.assertIsInstance(self.bagOfWords.get_word_count(), dict)
-
-    def test_count_words(self):
-        self.reset()
-        self.bagOfWords.count_words(self.testfile)
-        exp_word_count = {
-            'test': [0, 0, 0, 0, 2],
-            'tested': [3, 2, 1, 0, 1],
-            'testing': [0, 1, 1, 2, 1]
+        self.bagOfPhrases.count_phrases(self.testfile)
+        self.bagOfPhrases.convert_counts()
+        exp_phrase_count = {
+            ('test',): [0.1/2.5, 0.1/2.5, 0.1/2.5, 0.1/2.5, 2.1/2.5],
+            ('tested',): [3.1/7.5, 2.1/7.5, 1.1/7.5, 0.1/7.5, 1.1/7.5],
+            ('testing',): [0.1/5.5, 1.1/5.5, 1.1/5.5, 2.1/5.5, 1.1/5.5]
         }
-        self.assertEqual(self.bagOfWords.get_word_count(), exp_word_count)
+        self.assertEqual(dict(self.bagOfPhrases.get_phrase_count()), exp_phrase_count)
+
+    def test_count_phrases(self):
+        self.reset()
+        self.bagOfPhrases.count_phrases(self.testfile)
+        exp_phrase_count = {
+            ('test',): [0, 0, 0, 0, 2],
+            ('tested',): [3, 2, 1, 0, 1],
+            ('testing',): [0, 1, 1, 2, 1]
+        }
+        self.assertEqual(dict(self.bagOfPhrases.get_phrase_count()), exp_phrase_count)
 
     def test_predict(self):
         self.reset()
-        self.bagOfWords.count_words(self.testfile)
-        prediction = self.bagOfWords.predict('test')
+        self.bagOfPhrases.count_phrases(self.testfile)
+        prediction = self.bagOfPhrases.predict('test')
         self.assertEqual(prediction, 1)
 
 
