@@ -1,12 +1,13 @@
 # functions.py
+# Helper functions for cleaning reviews and calculating accuracy
 import math
 import re
 import enchant
+from collections import defaultdict
 from script.db import Database_Connection
 
 START = '<s>'
 STOP = '</s>'
-EPSILON = "ε"
 
 
 # Returns a list of words from the cleaned review
@@ -28,18 +29,54 @@ def clean_review(review, Dict):
     return new_words
 
 
-# Check the correctness of the predicted review comparing the tuple pair (obs, pred)
-def correctness(ratings):
-    n = len(ratings)
-    correct = 0
+# Calculate F1 score of sentiment analysis
+def f1_score(ratings, output=False):
+    tp = defaultdict(int)  # true positive
+    fn = defaultdict(int)  # false negative
+    fp = defaultdict(int)  # false positive
     for (pred, obs) in ratings:
         if pred == obs:
-            correct += 1
-    return correct / n
+            tp[obs] += 1
+        else:
+            fn[obs] += 1
+            fp[pred] += 1
+
+    prec = defaultdict(float)
+    rec = defaultdict(float)
+    f1 = defaultdict(float)
+    if output:
+        print('key         precision    recall       F1 score')
+        print('-'*47)
+    for s in tp.keys():
+        prec[s] = tp[s]/(tp[s]+fp[s])
+        rec[s] = tp[s]/(tp[s]+fn[s])
+        f1[s] = 2 / (1 / prec[s] + 1 / rec[s])
+        if output:
+            print('%-10s  %.7f    %.7f    %.7f' % (s, prec[s], rec[s], f1[s]))
+    overall_prec = sum(prec.values())/len(prec)
+    overall_rec = sum(rec.values())/len(rec)
+    overall_f1 = sum(f1.values())/len(f1)
+    return (overall_prec, overall_rec, overall_f1)
 
 
-# Calculate the baseline correctness
-def baseline_correctness(filename):
+# Check the accuracy (recall) of the predicted review comparing the tuple pair (obs, pred)
+def accuracy(ratings, output=False):
+    correct = defaultdict(int)
+    total = defaultdict(int)
+    for (pred, obs) in ratings:
+        if pred == obs:
+            correct[obs] += 1
+        total[obs] += 1
+    if output:
+        print('rating      accuracy')
+        print('-'*21)
+        for s in correct.keys():
+            print('%-10s  %.7f' % (str(s), correct[s]/total[s]))
+    return sum(correct.values()) / sum(total.values())
+
+
+# Calculate the baseline accuracy
+def baseline_accuracy(filename):
     correct = 0
     n = 0
     with open(filename, 'r') as rf:

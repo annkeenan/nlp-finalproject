@@ -1,4 +1,5 @@
 # test_naive_bayes.py
+# Test the naive bayes classifier
 import math
 import unittest
 from context import script
@@ -36,9 +37,14 @@ class TestBagOfPhrases(unittest.TestCase):
     def test_predict(self):
         self.reset()
         self.bagOfPhrases.count_phrases(self.testfile)
-        prediction = self.bagOfPhrases.predict('test')
-        self.assertEqual(prediction, 1)
+        prediction = self.bagOfPhrases.predict(['test'])
+        self.assertEqual(prediction, 5)
 
+    def test_predict_sentiment(self):
+        self.reset()
+        self.bagOfPhrases.count_phrases(self.testfile)
+        prediction = self.bagOfPhrases.predict(['test'], True)
+        self.assertEqual(prediction, 'positive')
 
 if __name__ == '__main__':
     unittest.main()

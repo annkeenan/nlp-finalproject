@@ -1,4 +1,5 @@
 # test_functions.py
+# Test the helper functions
 import enchant
 import unittest
 from context import script
@@ -17,15 +18,15 @@ class TestFunctions(unittest.TestCase):
         words = functions.clean_review(review, self._Dict)
         self.assertEqual(words, exp_words)
 
-    def test_correctness(self):
+    def test_accuracy(self):
         ratings = [(5, 4), (5, 5)]
-        exp_correctness = 0.5
-        correctness = functions.correctness(ratings)
-        self.assertEqual(correctness, exp_correctness)
+        exp_accuracy = 0.5
+        accuracy = functions.accuracy(ratings)
+        self.assertEqual(accuracy, exp_accuracy)
 
-    def test_baseline_correctness(self):
-        correctness = functions.baseline_correctness(self.testfile)
-        self.assertIsInstance(correctness, float)
+    def test_baseline_accuracy(self):
+        accuracy = functions.baseline_accuracy(self.testfile)
+        self.assertIsInstance(accuracy, float)
 
     def test_calculate_stddev(self):
         ratings = [(5, 4), (5, 3)]

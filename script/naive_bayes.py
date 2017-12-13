@@ -1,4 +1,5 @@
 # naive_bayes.py
+# Combine naive bayes with a n-gram model
 import math
 from script import functions
 from collections import defaultdict
@@ -11,12 +12,12 @@ class BagOfPhrases(object):
     def __init__(self, n=1):
         self._obs_phrases = set()
         self._n = n  # default unigram
-        self._phrase_count = defaultdict(list)
+        self._phrase_count = defaultict(list)
         self.multiplier = []
-        m = 2
+        m = 0
         for i in range(n):
-            m = math.pow(m, 2)
-            self.multiplier.append(m)
+            self.multiplier.append(math.pow(2, m))
+            m += 3
 
     # Return the private variable
     def get_phrase_count(self):
@@ -27,7 +28,7 @@ class BagOfPhrases(object):
         self.count_phrases(load_file)
         self.convert_counts()
 
-    # Convert counts to log probabilities
+    # Convert counts to probabilities
     def convert_counts(self):
         for phrase, rating_count in self._phrase_count.items():
             rating_count = [r + .1 for r in rating_count]
@@ -69,7 +70,7 @@ class BagOfPhrases(object):
                         phrase_list[i].pop(0)
 
     # Predict the rating of a review
-    def predict(self, review):
+    def predict(self, review, sentiment=False):
         counts = [0] * SCALE  # stores the probabilities for each rating
 
         # initial start words
@@ -104,6 +105,20 @@ class BagOfPhrases(object):
             for i in range(self._n):
                 phrase_list[i].pop(0)
 
-        # choose the first of the list if there is a tie
-        max_indices = [i for i, j in enumerate(counts) if j == max(counts)]
-        return max_indices[0] + 1
+        # if no words were in the training data, guess neutral
+        if sum(counts) == 0:
+            pred_rating = 3
+        else:
+            # choose the end of the list if there is a tie
+            pred_rating = [i for i, j in enumerate(counts) if j == max(counts)][0] + 1
+
+        if not sentiment:
+            return pred_rating
+
+        # if returning a sentiment
+        if pred_rating < 3:
+            return 'negative'
+        # elif pred_rating == 3:
+        #    return 'neutral'
+        else:
+            return 'positive'

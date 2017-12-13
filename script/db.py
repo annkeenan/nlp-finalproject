@@ -1,4 +1,5 @@
 # db.py
+# Connect to the MySQL database and run a query
 import pymysql.cursors
 
 

@@ -1,4 +1,5 @@
 # run_process_db.py
+# Query the database for a list of ratings/cleaned reviews
 import argparse
 from context import script
 from script import functions
