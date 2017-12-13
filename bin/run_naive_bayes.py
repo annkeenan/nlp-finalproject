@@ -11,8 +11,8 @@ if __name__ == '__main__':
     n = 1
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--train', help='load training data from a file')
-    parser.add_argument('--test', help='load testing data from a file')
+    parser.add_argument('--train', help='load training data from file TRAIN')
+    parser.add_argument('--test', help='load testing data from file TEST')
     parser.add_argument('-n', help='run phrase based naive bayes with N words')
     args = parser.parse_args()
 

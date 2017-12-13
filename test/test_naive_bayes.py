@@ -21,7 +21,7 @@ class TestBagOfPhrases(unittest.TestCase):
             ('tested',): [3.1/7.5, 2.1/7.5, 1.1/7.5, 0.1/7.5, 1.1/7.5],
             ('testing',): [0.1/5.5, 1.1/5.5, 1.1/5.5, 2.1/5.5, 1.1/5.5]
         }
-        self.assertEqual(dict(self.bagOfPhrases.get_phrase_count()), exp_phrase_count)
+        self.assertEqual(self.bagOfPhrases.get_phrase_count(), exp_phrase_count)
 
     def test_count_phrases(self):
         self.reset()
@@ -31,7 +31,7 @@ class TestBagOfPhrases(unittest.TestCase):
             ('tested',): [3, 2, 1, 0, 1],
             ('testing',): [0, 1, 1, 2, 1]
         }
-        self.assertEqual(dict(self.bagOfPhrases.get_phrase_count()), exp_phrase_count)
+        self.assertEqual(self.bagOfPhrases.get_phrase_count(), exp_phrase_count)
 
     def test_predict(self):
         self.reset()
